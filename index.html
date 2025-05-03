@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Web Quiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      padding: 20px;
+    }
+
+    .quiz-container {
+      background: #fff;
+      border-radius: 8px;
+      padding: 20px;
+      max-width: 700px;
+      margin: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .question {
+      margin-bottom: 20px;
+    }
+
+    .question h3 {
+      margin-bottom: 10px;
+    }
+
+    .question label {
+      display: block;
+      margin-bottom: 5px;
+      cursor: pointer;
+    }
+
+    .buttons {
+      margin-top: 20px;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin-right: 10px;
+      cursor: pointer;
+      background-color: darkgreen;
+      color: white;
+      border: none;
+      border-radius: 4px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .result {
+      margin-top: 20px;
+      font-size: 20px;
+      font-weight: bold;
+      color: green;
+    }
+
+    .feedback {
+      margin-top: 10px;
+      background-color: #ffe9e9;
+      padding: 10px;
+      border-radius: 5px;
+      color: #c0392b;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="quiz-container">
+    <form id="quizForm"">
+        <h1>Play Quiz Game</h1>
+      <div class="question">
+        <h3>1. Which language runs in a web browser?</h3>
+        <label><input type="radio" name="q1" value="A"> Java</label>
+        <label><input type="radio" name="q1" value="B"> C</label>
+        <label><input type="radio" name="q1" value="C"> Python</label>
+        <label><input type="radio" name="q1" value="D"> JavaScript</label>
+      </div>
+
+      <div class="question">
+        <h3>2. What does CSS stand for?</h3>
+        <label><input type="radio" name="q2" value="A"> Computer Style Sheets</label>
+        <label><input type="radio" name="q2" value="B"> Colorful Style Sheets</label>
+        <label><input type="radio" name="q2" value="C"> Cascading Style Sheets</label>
+        <label><input type="radio" name="q2" value="D"> Creative Style Sheets</label>
+      </div>
+
+      <div class="question">
+        <h3>3. What year was JavaScript created?</h3>
+        <label><input type="radio" name="q3" value="A"> 1990</label>
+        <label><input type="radio" name="q3" value="B"> 1995</label>
+        <label><input type="radio" name="q3" value="C"> 2000</label>
+        <label><input type="radio" name="q3" value="D"> 2005</label>
+      </div>
+
+      <div class="question">
+        <h3>4. Who is the founder of Microsoft?</h3>
+        <label><input type="radio" name="q4" value="A"> Steve Jobs</label>
+        <label><input type="radio" name="q4" value="B"> Elon Musk</label>
+        <label><input type="radio" name="q4" value="C"> Bill Gates</label>
+        <label><input type="radio" name="q4" value="D"> Mark Zuckerberg</label>
+      </div>
+
+      <div class="question">
+        <h3>5. What does HTML stand for?</h3>
+        <label><input type="radio" name="q5" value="A"> Hyperlink and Text Markup Language</label>
+        <label><input type="radio" name="q5" value="B"> HyperText Markup Language</label>
+        <label><input type="radio" name="q5" value="C"> Home Tool Markup Language</label>
+        <label><input type="radio" name="q5" value="D"> Hyper Transfer Markup Language</label>
+      </div>
+
+      <div class="buttons">
+        <button type="button" onclick="submitQuiz()">Submit Quiz</button>
+        <button type="button" onclick="resetQuiz()">Play Again</button>
+      </div>
+    </form>
+
+    <div class="result" id="resultBox"></div>
+    <div class="feedback" id="feedbackBox"></div>
+  </div>
+
+  <script>
+    const correctAnswers = {
+      q1: "D",
+      q2: "C",
+      q3: "B",
+      q4: "C",
+      q5: "B"
+    };
+
+    const correctAnswerText = {
+      q1: "JavaScript",
+      q2: "Cascading Style Sheets",
+      q3: "1995",
+      q4: "Bill Gates",
+      q5: "HyperText Markup Language"
+    };
+
+function submitQuiz() {
+  const form = document.getElementById('quizForm');
+  let allAnswered = true;
+  let score = 0;
+  const feedback = [];
+
+  // Check if all questions are answered
+  for (let key in correctAnswers) {
+    const selected = form.querySelector(`input[name="${key}"]:checked`);
+    if (!selected) {
+      allAnswered = false;
+      break;
+    }
+  }
+
+  // Alert if not all are answered
+  if (!allAnswered) {
+    alert("Please answer all questions before submitting.");
+    return;
+  }
+
+  // Now evaluate and show results
+  for (let key in correctAnswers) {
+    const selected = form.querySelector(`input[name="${key}"]:checked`);
+    if (selected.value === correctAnswers[key]) {
+      score++;
+    } else {
+      feedback.push(`Question ${key[1]}: Correct answer is "${correctAnswerText[key]}"`);
+    }
+  }
+
+  document.getElementById('resultBox').innerText = `Your Score: ${score} / 5`;
+  document.getElementById('feedbackBox').innerHTML = feedback.length
+    ? feedback.join('<br>')
+    : '<span style="color: green;">All answers correct! 🎉</span>';
+}
+
+
+    function resetQuiz() {
+      document.getElementById('quizForm').reset();
+      document.getElementById('resultBox').innerText = '';
+      document.getElementById('feedbackBox').innerText = '';
+    }
+  </script>
+
+</body>
+</html>
